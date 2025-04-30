@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lelang Tanah Masjid</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Lelang Tanah untuk Membangun Masjid</h1>
+  <h2>Dusun Kebukuran, Desa Kebojongan, Kec. Comal, Kab. Pemalang</h2>
+
+  <section class="motivasi">
+    <p><strong>“Perumpamaan (nafkah yang dikeluarkan oleh) orang-orang yang menafkahkan hartanya di jalan Allah
+    adalah serupa dengan sebutir biji yang menumbuhkan tujuh bulir, pada tiap-tiap bulir seratus biji.”</strong></p>
+    <p><em>— Al-Baqarah: 261</em></p>
+    <p><strong>Artinya:</strong> "Perumpamaan orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang menumbuhkan tujuh tangkai, pada setiap tangkai ada seratus biji. Allah melipatgandakan (ganjaran) bagi siapa yang Dia kehendaki. Dan Allah Mahaluas, Maha Mengetahui."</p>
+  </section>
+
+  <section>
+    <h2>Luas Tanah Lelang: 378,66 M2<sup>2</sup></h2>
+    <img src="mock up denah.png" alt="Denah Lelang Tanah" class="denah"/>
+    <p><strong>Lelang: Rp 720.000 / M</strong></p>
+  </section>
+
+  <section class="progress">
+    <h3>Progress Lelang</h3>
+    <div class="bar-container">
+      <div class="bar" style="width: 50%;">Rp 136.000.000 / Rp 272.635.200</div>
+    </div>
+    <h3>Jumlah Dana Amal Masuk</h3>
+    <input type="text" value="Rp 17.000.000" />
+  </section>
+
+  <div class="buttons">
+    <button class="btn" onclick="showPembayaran()">LELANG</button>
+    <button class="btn" onclick="showPembayaran()">AMAL</button>
+    <button class="btn" onclick="window.open('https://wa.me/6281901495505?text=Assalamu%27alaikum%20saya%20ingin%20wakaf%20untuk%20pembangunan%20masjid.', '_blank')">WAKAF</button>
+  </div>
+
+  <div id="pembayaran" class="hidden">
+    <h3>Bayar via QRIS:</h3>
+    <img src="qris comal atk.png" alt="QRIS Pembayaran" class="qris"/>
+    <a href="qris comal atk.png" download>Download QRIS</a>
+    <h3>No. Rekening:</h3>
+    <p>BNI: <span onclick="copyText('123456')">123456</span></p>
+    <p>BCA: <span onclick="copyText('12345687')">12345687</span></p>
+    <button class="btn" onclick="window.open('https://wa.me/6281901495505?text=Assalamu%27alaikum%2C%20saya%20ingin%20membayar%20secara%20cash%20untuk%20lelang%20atau%20amal.', '_blank')">Pembayaran Cash</button>
+  </div>
+
+  <section id="testimoni">
+    <h3>Testimoni dari Donatur</h3>
+    <div class="testimonial-box">
+      <p>"Alhamdulillah, bisa ikut andil dalam pembangunan masjid ini."</p>
+      <p>"Semoga menjadi amal jariyah untuk kita semua."</p>
+    </div>
+  </section>
+
+  <div class="section buttons">
+    <button class="btn" id="testimoni-button" onclick="window.open('https://wa.me/6281901495505?text=Assalamu%27alaikum%20warahmatullahi%20wabarakatuh.%20Saya%20ingin%20memberikan%20testimoni%20untuk%20lelang%20tanah%20masjid.', '_blank')">Testimoni</button>
+    <button class="btn" onclick="window.open('https://wa.me/6281901495505?text=Assalamu%27alaikum%2C%20saya%20ingin%20bertanya%20tentang%20lelang%20tanah%20masjid.', '_blank')">Chat Panitia</button>
+  </div>
+
+  <script>
+    function showPembayaran() {
+      document.getElementById('pembayaran').classList.remove('hidden');
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      alert("Nomor rekening disalin: " + text);
+    }
+  </script>
+</body>
+</html>
