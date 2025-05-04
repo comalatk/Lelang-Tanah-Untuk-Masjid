@@ -71,3 +71,42 @@ input {
   width: 90%;
   color: #000;
 }
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  max-width: 360px;
+  margin: 10px auto;
+}
+
+.kotak {
+  aspect-ratio: 1 / 1.2;
+  background-color: white;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  text-align: center;
+}
+
+.kotak.hijau {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.kotak.kuning {
+  background-color: #FFEB3B;
+  color: black;
+}
+
+.kotak.putih {
+  background-color: #ffffff;
+  color: black;
+}
+
+.legend {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
