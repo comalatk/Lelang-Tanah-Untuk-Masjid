@@ -23,7 +23,17 @@ Mbangun Masjid</h1>
   <!--  <img src="mock up denah.png" alt="Denah Lelang Tanah" class="denah"/> -->
     <p><strong>Lelang: Rp 1.000.000 / Kapling (3,33 M2)</strong></p>
   </section>
-
+<section class="grid-section">
+  <h3>Denah Wakaf (6 x 6 Kapling)</h3>
+  <div class="grid-container">
+    <!-- Kotak-kotak akan ditambahkan lewat JavaScript -->
+  </div>
+  <div class="legend">
+    <p>🟩 Hijau: Sudah wakaf (dana sudah masuk).</p>
+    <p>🟨 Kuning: PO Wakaf (komitmen, belum bayar).</p>
+    <p>⬜ Putih: Belum diambil.</p>
+  </div>
+</section>
   <!--<section class="progress">
     <h3>Progress Lelang</h3>
 <p>Rp 30.000.000 / Rp 36.000.000 <strong>(83%)</strong></p>
@@ -89,5 +99,22 @@ Mbangun Masjid</h1>
       alert("Nomor rekening disalin: " + text);
     }
   </script>
+    <script>
+  const pewakafData = [
+    { id: 1, nama: "Ahmad", status: "hijau" },
+    { id: 2, nama: "Budi", status: "kuning" },
+    { id: 3, nama: "", status: "putih" },
+    // ... lanjutkan hingga 36 data
+  ];
+
+  const container = document.querySelector('.grid-container');
+
+  pewakafData.forEach(data => {
+    const kotak = document.createElement('div');
+    kotak.classList.add('kotak', data.status);
+    kotak.innerHTML = data.nama ? `<span>${data.nama}</span>` : '';
+    container.appendChild(kotak);
+  });
+</script>
 </body>
 </html>
