@@ -1,56 +1,93 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daftar Pewakaf</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+    #grid-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .kotak {
+      height: 60px;
+      border-radius: 8px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      padding: 4px;
+      text-align: center;
+    }
+    .hijau { background-color: #2ecc71; }
+    .biru { background-color: #3498db; }
+    .kuning { background-color: #f1c40f; color: #000; }
+    .kosong { background-color: #bdc3c7; }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>Daftar Pewakaf</h1>
-    <div id="grid-container"></div>
+    <div id="grid-container">Loading data...</div>
   </div>
 
   <script>
-    // Contoh data dummy sementara
-    const data = [
-      { nama: "Ahmad", jumlah: 1200000 },
-      { nama: "Budi", jumlah: 500000 },
-      { nama: "Chandra", jumlah: 10000 },
-      { nama: "Dina", jumlah: 0 },
-      { nama: "Eva", jumlah: 0 },
-      { nama: "Fikri", jumlah: 1500000 },
-      { nama: "Gina", jumlah: 1000 },
-      { nama: "Hasan", jumlah: 100000 },
-      { nama: "Ika", jumlah: 0 },
-    ];
-
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
     const kotakTotal = 45;
-    const container = document.getElementById("grid-container");
+    const container = document.getElementById('grid-container');
 
-    for (let i = 0; i < kotakTotal; i++) {
-      const kotak = document.createElement("div");
-      kotak.classList.add("kotak");
+    fetch(sheetUrl)
+      .then(response => response.text())
+      .then(csvText => {
+        const rows = csvText.trim().split('\n').slice(1); // skip header
+        const data = rows.map(row => {
+          const [nama, nominal] = row.split(',');
+          return {
+            nama: nama.trim(),
+            jumlah: parseInt(nominal.replace(/\D/g, '')) || 0,
+          };
+        });
 
-      if (data[i]) {
-        kotak.textContent = data[i].nama;
-        if (data[i].jumlah >= 1000000) {
-          kotak.classList.add("hijau");
-        } else if (data[i].jumlah >= 1000) {
-          kotak.classList.add("biru");
-        } else {
-          kotak.classList.add("kuning");
+        container.innerHTML = ''; // clear loading text
+        for (let i = 0; i < kotakTotal; i++) {
+          const kotak = document.createElement('div');
+          kotak.classList.add('kotak');
+
+          if (data[i]) {
+            kotak.textContent = data[i].nama;
+            if (data[i].jumlah >= 1000000) {
+              kotak.classList.add('hijau');
+            } else if (data[i].jumlah >= 1000) {
+              kotak.classList.add('biru');
+            } else {
+              kotak.classList.add('kuning');
+            }
+          } else {
+            kotak.textContent = "Kosong";
+            kotak.classList.add('kosong');
+          }
+
+          container.appendChild(kotak);
         }
-      } else {
-        kotak.textContent = "Kosong";
-        kotak.classList.add("kosong");
-      }
-
-      container.appendChild(kotak);
-    }
+      })
+      .catch(error => {
+        container.innerHTML = 'Gagal memuat data.';
+        console.error('Fetch error:', error);
+      });
   </script>
 </body>
 </html>
-
