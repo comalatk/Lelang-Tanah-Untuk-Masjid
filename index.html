@@ -3,165 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gerakan Wakaf Masjid</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f7f6f2;
-      margin: 0;
-      padding: 20px;
-      color: #333;
-    }
-    h1, h2, h3 {
-      text-align: center;
-    }
-    .motivasi {
-      background-color: #e0f7fa;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-    }
-    .progress, .buttons, #pembayaran, #testimoni, .grid-container {
-      margin: 20px auto;
-      max-width: 600px;
-    }
-    .bar-container {
-      background-color: #ccc;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .bar {
-      background-color: #4caf50;
-      color: white;
-      padding: 10px;
-      text-align: center;
-    }
-    .btn {
-      display: inline-block;
-      margin: 10px 5px;
-      padding: 10px 20px;
-      background-color: #2196F3;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background-color: #0b7dda;
-    }
-    .hidden {
-      display: none;
-    }
-    .testimonial-box {
-      max-height: 150px;
-      overflow-y: auto;
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 5px;
-      background-color: #fff;
-    }
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(9, 1fr);
-      gap: 5px;
-      margin-top: 30px;
-    }
-    .grid-item {
-      padding: 10px;
-      font-size: 12px;
-      text-align: center;
-      border-radius: 5px;
-      color: white;
-    }
-    .green { background-color: #4caf50; }
-    .blue { background-color: #2196f3; }
-    .yellow { background-color: #ffeb3b; color: #333; }
-    .gray { background-color: #9e9e9e; }
-  </style>
+  <title>Data Pewakaf</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Gerakan Nom-Noman Urunan Tuku Lemah Kanggo Mbangun Masjid</h1>
-  <h2>Dusun Kebukuran, Desa Kebojongan, Kec. Comal, Kab. Pemalang</h2>
-
-  <section class="motivasi">
-    <p><strong>"Perumpamaan orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang menumbuhkan tujuh tangkai, pada setiap tangkai ada seratus biji."</strong></p>
-    <p><em>— Al-Baqarah: 261</em></p>
-  </section>
-
-  <section class="progress">
-    <h3>Progress Lelang</h3>
-    <div class="bar-container">
-      <div class="bar" style="width: 83%;">Rp 30.000.000 / Rp 36.000.000 (83%)</div>
-    </div>
-    <h3>Jumlah Dana Amal Masuk</h3>
-    <input type="text" value="Rp 600.000" />
-  </section>
-
-  <div class="buttons">
-    <button class="btn" onclick="showPembayaran()">LELANG</button>
-    <button class="btn" onclick="showPembayaran()">AMAL</button>
-    <button class="btn" onclick="window.open('https://wa.me/6281901495505?text=Assalamu%27alaikum%20saya%20ingin%20wakaf%20untuk%20pembangunan%20masjid.', '_blank')">WAKAF</button>
-  </div>
-
-  <div id="pembayaran" class="hidden">
-    <h3>Bayar via QRIS:</h3>
-    <img src="qris comal atk.png" alt="QRIS Pembayaran" style="max-width:100%; height:auto;"/>
-    <a href="qris comal atk.png" download>Download QRIS</a>
-    <h3>No. Rekening: a.n RISKIANTO</h3>
-    <p>BNI: <span onclick="copyText('0682432570')">0682432570</span></p>
-    <button class="btn" onclick="window.open('https://wa.me/6281901495505?text=Assalamu%27alaikum%2C%20saya%20ingin%20membayar%20secara%20cash%20untuk%20lelang%20atau%20amal.', '_blank')">Pembayaran Cash</button>
-  </div>
-
-  <section id="testimoni">
-    <h3>Testimoni dari Donatur</h3>
-    <div class="testimonial-box">
-      <p>"Alhamdulillah, bisa ikut andil dalam pembangunan masjid ini."</p>
-      <p>"Semoga menjadi amal jariyah untuk kita semua."</p>
-    </div>
-  </section>
-
-  <div class="section buttons">
-    <button class="btn" onclick="window.open('https://wa.me/6281901495505?text=Assalamu%27alaikum%20warahmatullahi%20wabarakatuh.%20Saya%20ingin%20memberikan%20testimoni%20untuk%20lelang%20tanah%20masjid.', '_blank')">Testimoni</button>
-    <button class="btn" onclick="window.open('https://wa.me/6281901495505?text=Assalamu%27alaikum%2C%20saya%20ingin%20bertanya%20tentang%20lelang%20tanah%20masjid.', '_blank')">Chat Panitia</button>
-  </div>
-
-  <section class="grid-container" id="pewakafGrid">
-    <!-- Grid pewakaf di-generate oleh JS -->
-  </section>
+  <h1>Daftar Pewakaf</h1>
+  <p>Keterangan warna:</p>
+  <ul>
+    <li><span class="legend green"></span> Wakaf Rp 1.000.000 ke atas</li>
+    <li><span class="legend blue"></span> Wakaf Rp 1.000 – 999.999</li>
+    <li><span class="legend yellow"></span> Sudah PO</li>
+    <li><span class="legend gray"></span> Belum Wakaf</li>
+  </ul>
+  <div id="pewakaf-container" class="grid-kotak"></div>
 
   <script>
-    function showPembayaran() {
-      document.getElementById('pembayaran').classList.remove('hidden');
-    }
-
-    function copyText(text) {
-      navigator.clipboard.writeText(text);
-      alert("Nomor rekening disalin: " + text);
-    }
-
-    const sheetURL = 'https://opensheet.elk.sh/https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/1';
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv";
 
     fetch(sheetURL)
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('pewakafGrid');
-        for (let i = 0; i < 45; i++) {
-          const nama = data[i]?.Nama || '';
-          const nominal = parseInt(data[i]?.Nominal?.replace(/\D/g, '') || 0);
-          const div = document.createElement('div');
-          div.classList.add('grid-item');
+      .then(res => res.text())
+      .then(csv => {
+        const rows = csv.split("\n").slice(1);
+        const container = document.getElementById("pewakaf-container");
 
-          if (nominal >= 1000000) div.classList.add('green');
-          else if (nominal >= 1000) div.classList.add('blue');
-          else if (nama) div.classList.add('yellow');
-          else div.classList.add('gray');
+        rows.forEach(row => {
+          const cols = row.split(",");
+          const nama = cols[0]?.trim();
+          const jumlah = parseInt(cols[1]?.replace(/\D/g, "")) || 0;
 
-          div.textContent = nama || '---';
-          container.appendChild(div);
-        }
-      })
-      .catch(error => {
-        console.error('Gagal mengambil data pewakaf:', error);
+          const kotak = document.createElement("div");
+          kotak.className = "kotak";
+          kotak.textContent = nama;
+
+          if (jumlah >= 1000000) kotak.style.backgroundColor = "green";
+          else if (jumlah >= 1000) kotak.style.backgroundColor = "blue";
+          else if (nama) kotak.style.backgroundColor = "yellow";
+          else kotak.style.backgroundColor = "gray";
+
+          container.appendChild(kotak);
+        });
       });
   </script>
 </body>
