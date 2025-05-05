@@ -42,11 +42,66 @@
 <body>
   <div class="container">
     <h1>Daftar Orang Baik</h1>
-    <h2>1 Juta / Kapling</h2>
-<h3>Hijau = Lunas</h3>
-<h3>Biru = Nyicil</h3>
-<h3>Kuning = PO</h3>
-<h3>Abu = Kosong</h3>
+    <section class="legend">
+  <h2>Harga Lelang: <span>Rp 1.000.000 / Kapling</span></h2>
+  <div class="legend-items">
+    <div class="legend-item"><span class="color-box hijau"></span>Lunas</div>
+    <div class="legend-item"><span class="color-box biru"></span>Nyicil</div>
+    <div class="legend-item"><span class="color-box kuning"></span>PO</div>
+    <div class="legend-item"><span class="color-box abu"></span>Kosong</div>
+  </div>
+</section>
+    <style>
+  .legend {
+    background: #fff;
+    padding: 1.2em;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+  }
+
+  .legend h2 {
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+    color: #333;
+  }
+
+  .legend h2 span {
+    color: #16a085;
+    font-weight: bold;
+  }
+
+  .legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    background: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 8px;
+  }
+
+  .color-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .hijau { background-color: #27ae60; }
+  .biru { background-color: #2980b9; }
+  .kuning { background-color: #f1c40f; }
+  .abu { background-color: #bdc3c7; }
+</style>
     <div id="grid-container">Loading data...</div>
   </div>
 
