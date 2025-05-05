@@ -1,35 +1,55 @@
 
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  background: #f4f4f4;
-}
-.grid-kotak {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 10px;
-  margin-top: 20px;
-}
-.kotak {
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-  border-radius: 6px;
-}
-.legend {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  vertical-align: middle;
-  border-radius: 4px;
-}
-.green { background: green; }
-.blue { background: blue; }
-.red { background: red; }
-.gray { background: gray; }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daftar Pewakaf</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Daftar Pewakaf</h1>
+    <div id="grid-container"></div>
+  </div>
+
+  <script>
+    // Contoh data dummy sementara
+    const data = [
+      { nama: "Ahmad", jumlah: 1200000 },
+      { nama: "Budi", jumlah: 500000 },
+      { nama: "Chandra", jumlah: 10000 },
+      { nama: "Dina", jumlah: 0 },
+      { nama: "Eva", jumlah: 0 },
+      { nama: "Fikri", jumlah: 1500000 },
+      { nama: "Gina", jumlah: 1000 },
+      { nama: "Hasan", jumlah: 100000 },
+      { nama: "Ika", jumlah: 0 },
+    ];
+
+    const kotakTotal = 45;
+    const container = document.getElementById("grid-container");
+
+    for (let i = 0; i < kotakTotal; i++) {
+      const kotak = document.createElement("div");
+      kotak.classList.add("kotak");
+
+      if (data[i]) {
+        kotak.textContent = data[i].nama;
+        if (data[i].jumlah >= 1000000) {
+          kotak.classList.add("hijau");
+        } else if (data[i].jumlah >= 1000) {
+          kotak.classList.add("biru");
+        } else {
+          kotak.classList.add("kuning");
+        }
+      } else {
+        kotak.textContent = "Kosong";
+        kotak.classList.add("kosong");
+      }
+
+      container.appendChild(kotak);
+    }
+  </script>
+</body>
+</html>
