@@ -1,1 +1,56 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daftar Pewakaf</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Daftar Pewakaf</h1>
+    <div id="grid-container"></div>
+  </div>
+
+  <script>
+    // Contoh data dummy sementara
+    const data = [
+      { nama: "Ahmad", jumlah: 1200000 },
+      { nama: "Budi", jumlah: 500000 },
+      { nama: "Chandra", jumlah: 10000 },
+      { nama: "Dina", jumlah: 0 },
+      { nama: "Eva", jumlah: 0 },
+      { nama: "Fikri", jumlah: 1500000 },
+      { nama: "Gina", jumlah: 1000 },
+      { nama: "Hasan", jumlah: 100000 },
+      { nama: "Ika", jumlah: 0 },
+    ];
+
+    const kotakTotal = 45;
+    const container = document.getElementById("grid-container");
+
+    for (let i = 0; i < kotakTotal; i++) {
+      const kotak = document.createElement("div");
+      kotak.classList.add("kotak");
+
+      if (data[i]) {
+        kotak.textContent = data[i].nama;
+        if (data[i].jumlah >= 1000000) {
+          kotak.classList.add("hijau");
+        } else if (data[i].jumlah >= 1000) {
+          kotak.classList.add("biru");
+        } else {
+          kotak.classList.add("kuning");
+        }
+      } else {
+        kotak.textContent = "Kosong";
+        kotak.classList.add("kosong");
+      }
+
+      container.appendChild(kotak);
+    }
+  </script>
+</body>
+</html>
+
