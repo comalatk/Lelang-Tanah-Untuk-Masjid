@@ -122,7 +122,6 @@
 
     <div class="totals">
       <p><strong>Total Uang Masuk:</strong> <span id="total-masuk">Loading...</span></p>
-<!-- <p><strong>Total PO:</strong> <span id="total-po">Loading...</span></p>-->
     </div>
 
     <div id="grid-container">Memuat data...</div>
@@ -131,7 +130,7 @@
       <div class="legend-item"><div class="legend-color lg-hijau"></div> Lunas </div>
       <div class="legend-item"><div class="legend-color lg-biru"></div> Nyicil </div>
       <div class="legend-item"><div class="legend-color lg-kuning"></div> PO </div>
-      <div class="legend-item"><div class="legend-color lg-abu"></div> Kosong </div>
+      <div class="legend-item"><div class="legend-color lg-abu"></div> Kosong (Belum ada nama)</div>
     </div>
   </div>
 
@@ -139,17 +138,15 @@
   <div id="modal" class="modal hidden">
     <div class="modal-content">
       <span class="close-button" onclick="closeModal()">×</span>
-      <p id="modal-text">Informasi penerima.</p>
+      <p id="modal-text"></p>
     </div>
   </div>
 
   <script>
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/19BGTnv4WoNttQiNNoBjVG-Rf1LW83WzQ26dg9egDRyg/gviz/tq?tqx=out:csv';
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQofMQ0gRV_4Miwh12G8oYDhM1ACIRr8vEUbxF7HTVf9Wj58oVTEKJSFlY7ZYx3R7Jhkp1y6gO9DP4d/pub?output=csv';
     const kotakTotal = 45;
-
     const container = document.getElementById('grid-container');
     const totalMasukEl = document.getElementById('total-masuk');
-    const totalPOEl = document.getElementById('total-po');
 
     function openModal(message) {
       document.getElementById('modal-text').textContent = message;
@@ -178,9 +175,8 @@
         });
 
         let totalMasuk = 0;
-        let totalPO = 0;
 
-        container.innerHTML = '';
+        container.innerHTML = ''; // Bersihkan kotak sebelumnya
 
         for (let i = 0; i < kotakTotal; i++) {
           const kotak = document.createElement('div');
@@ -197,7 +193,6 @@
               totalMasuk += data[i].jumlah;
             } else {
               kotak.classList.add('kuning');
-              totalPO += 1000000;
             }
 
             kotak.addEventListener('click', () => {
@@ -213,7 +208,6 @@
         }
 
         totalMasukEl.textContent = formatRupiah(totalMasuk);
-        totalPOEl.textContent = formatRupiah(totalPO);
       })
       .catch(error => {
         container.innerHTML = 'Gagal memuat data.';
