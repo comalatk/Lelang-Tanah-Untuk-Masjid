@@ -137,13 +137,13 @@
   <!-- Modal -->
   <div id="modal" class="modal hidden">
     <div class="modal-content">
-      <span class="close-button" onclick="closeModal()">×</span>
-      <p id="modal-text"></p>
+      <span class="close-button" onclick="closeModal()">&times;</span>
+      <p id="modal-text">Informasi</p>
     </div>
   </div>
 
   <script>
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQofMQ0gRV_4Miwh12G8oYDhM1ACIRr8vEUbxF7HTVf9Wj58oVTEKJSFlY7ZYx3R7Jhkp1y6gO9DP4d/pub?output=csv';
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
     const kotakTotal = 45;
     const container = document.getElementById('grid-container');
     const totalMasukEl = document.getElementById('total-masuk');
@@ -164,19 +164,25 @@
     fetch(sheetUrl)
       .then(response => response.text())
       .then(csvText => {
-        const rows = csvText.trim().split('\n').slice(1); // Skip header
+        const rows = csvText.trim().split('\n').slice(1);
+
         const data = rows.map(row => {
-          const [nama, nominal, penerima] = row.split(',');
+          const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+          if (!cols) return { nama: '', jumlah: 0, penerima: '' };
+
+          const nama = (cols[0] || '').replace(/^"|"$/g, '').trim();
+          const nominal = (cols[1] || '0').replace(/\D/g, '');
+          const penerima = (cols[2] || 'Belum diketahui').replace(/^"|"$/g, '').trim();
+
           return {
-            nama: (nama || '').trim(),
-            jumlah: parseInt(nominal.replace(/\D/g, '')) || 0,
-            penerima: (penerima || 'Belum diketahui').trim()
+            nama,
+            jumlah: parseInt(nominal) || 0,
+            penerima
           };
         });
 
         let totalMasuk = 0;
-
-        container.innerHTML = ''; // Bersihkan kotak sebelumnya
+        container.innerHTML = '';
 
         for (let i = 0; i < kotakTotal; i++) {
           const kotak = document.createElement('div');
