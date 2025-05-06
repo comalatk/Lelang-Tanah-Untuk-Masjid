@@ -163,7 +163,11 @@
     .then(csvText => {
       const rows = csvText.trim().split('\n').slice(1); // Skip header
       const data = rows.map(row => {
-        const [nama, nominal, penerima] = row.split(',');
+       
+const [nama, nominal] = row.split(',');
+const penerima = 'Belum diketahui'; // fallback jika tidak ada kolom ke-3
+
+        
         return {
           nama: (nama || '').trim(),
           jumlah: parseInt(nominal.replace(/\D/g, '')) || 0,
@@ -279,6 +283,14 @@
       return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
   </script>-->
+
+  <div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-button" onclick="closeModal()">×</span>
+    <p id="modal-text">Informasi akan ditampilkan di sini</p>
+  </div>
+</div>
+
   
 </body>
 </html>
