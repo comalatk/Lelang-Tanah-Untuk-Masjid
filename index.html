@@ -81,6 +81,40 @@
     .lg-biru { background-color: #3498db; }
     .lg-kuning { background-color: #f1c40f; }
     .lg-abu { background-color: #bdc3c7; }
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  max-width: 90%;
+  text-align: center;
+}
+
+.close-button {
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+    
   </style>
 </head>
 <body>
@@ -102,7 +136,72 @@
     </div>
   </div>
 
+
   <script>
+  const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
+  const kotakTotal = 45;
+  const container = document.getElementById('grid-container');
+
+  function openModal(message) {
+    document.getElementById('modal-text').textContent = message;
+    document.getElementById('modal').classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.add('hidden');
+  }
+
+  fetch(sheetUrl)
+    .then(response => response.text())
+    .then(csvText => {
+      const rows = csvText.trim().split('\n').slice(1); // Skip header
+      const data = rows.map(row => {
+        const [nama, nominal, penerima] = row.split(',');
+        return {
+          nama: nama.trim(),
+          jumlah: parseInt(nominal.replace(/\D/g, '')) || 0,
+          penerima: (penerima || 'Belum diketahui').trim()
+        };
+      });
+
+      container.innerHTML = ''; // clear loading
+      for (let i = 0; i < kotakTotal; i++) {
+        const kotak = document.createElement('div');
+        kotak.classList.add('kotak');
+
+        if (data[i]) {
+          kotak.textContent = data[i].nama;
+
+          // Tambah warna
+          if (data[i].jumlah >= 1000000) {
+            kotak.classList.add('hijau');
+          } else if (data[i].jumlah >= 1000) {
+            kotak.classList.add('biru');
+          } else {
+            kotak.classList.add('kuning');
+          }
+
+          // Event klik tampilkan modal
+          kotak.addEventListener('click', () => {
+            openModal(`Dana diterima oleh: ${data[i].penerima}`);
+          });
+        } else {
+          kotak.textContent = "Kosong";
+          kotak.classList.add('kosong');
+        }
+
+        container.appendChild(kotak);
+      }
+    })
+    .catch(error => {
+      container.innerHTML = 'Gagal memuat data.';
+      console.error('Fetch error:', error);
+    });
+</script>
+
+  
+  
+<!--  <script>
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
     const kotakTotal = 45;
 
@@ -162,6 +261,7 @@
     function formatRupiah(angka) {
       return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
-  </script>
+  </script>-->
+  
 </body>
 </html>
