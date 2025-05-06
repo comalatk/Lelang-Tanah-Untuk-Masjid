@@ -6,22 +6,40 @@
   <title>Daftar Orang Baik</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 20px;
-      background: #f5f5f5;
+      background: #f9f9f9;
+      color: #333;
     }
+
     .container {
-      max-width: 600px;
+      max-width: 700px;
       margin: auto;
       text-align: center;
     }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .totals {
+      background: #ecf0f1;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 10px;
+      font-size: 1.1rem;
+    }
+
     #grid-container {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
       margin-top: 20px;
     }
+
     .kotak {
       height: 60px;
       border-radius: 8px;
@@ -32,83 +50,65 @@
       font-size: 14px;
       padding: 4px;
       text-align: center;
+      word-break: break-word;
     }
+
     .hijau { background-color: #2ecc71; }
     .biru { background-color: #3498db; }
     .kuning { background-color: #f1c40f; color: #000; }
     .kosong { background-color: #bdc3c7; }
+
+    .legend {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      margin: 5px 10px;
+      font-size: 14px;
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+      border-radius: 4px;
+    }
+
+    .lg-hijau { background-color: #2ecc71; }
+    .lg-biru { background-color: #3498db; }
+    .lg-kuning { background-color: #f1c40f; }
+    .lg-abu { background-color: #bdc3c7; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Daftar Orang Baik</h1>
-    <section class="legend">
-  <h2>Harga Lelang: <span>Rp 1.000.000 / Kapling</span></h2>
-  <div class="legend-items">
-    <div class="legend-item"><span class="color-box hijau"></span>Lunas</div>
-    <div class="legend-item"><span class="color-box biru"></span>Nyicil</div>
-    <div class="legend-item"><span class="color-box kuning"></span>PO</div>
-    <div class="legend-item"><span class="color-box abu"></span>Kosong</div>
-  </div>
-</section>
-    <style>
-  .legend {
-    background: #fff;
-    padding: 1.2em;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    margin: 20px auto;
-    max-width: 600px;
-    text-align: center;
-  }
 
-  .legend h2 {
-    margin-bottom: 15px;
-    font-size: 1.25rem;
-    color: #333;
-  }
+    <div class="totals">
+      <p><strong>Total Uang Masuk:</strong> <span id="total-masuk">Loading...</span></p>
+      <p><strong>Total PO:</strong> <span id="total-po">Loading...</span></p>
+    </div>
 
-  .legend h2 span {
-    color: #16a085;
-    font-weight: bold;
-  }
+    <div id="grid-container">Memuat data...</div>
 
-  .legend-items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-    background: #f0f0f0;
-    padding: 6px 12px;
-    border-radius: 8px;
-  }
-
-  .color-box {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    display: inline-block;
-  }
-
-  .hijau { background-color: #27ae60; }
-  .biru { background-color: #2980b9; }
-  .kuning { background-color: #f1c40f; }
-  .abu { background-color: #bdc3c7; }
-</style>
-    <div id="grid-container">Loading data...</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-color lg-hijau"></div> Lunas (≥ Rp1.000.000)</div>
+      <div class="legend-item"><div class="legend-color lg-biru"></div> Nyicil (Rp1.000 - Rp999.999)</div>
+      <div class="legend-item"><div class="legend-color lg-kuning"></div> PO (Nama ada, nominal 0)</div>
+      <div class="legend-item"><div class="legend-color lg-abu"></div> Kosong (Belum ada nama)</div>
+    </div>
   </div>
 
   <script>
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
     const kotakTotal = 45;
+
     const container = document.getElementById('grid-container');
+    const totalMasukEl = document.getElementById('total-masuk');
+    const totalPOEl = document.getElementById('total-po');
 
     fetch(sheetUrl)
       .then(response => response.text())
@@ -122,19 +122,26 @@
           };
         });
 
-        container.innerHTML = ''; // clear loading text
+        let totalMasuk = 0;
+        let totalPO = 0;
+
+        container.innerHTML = ''; // clear "memuat..."
+
         for (let i = 0; i < kotakTotal; i++) {
           const kotak = document.createElement('div');
           kotak.classList.add('kotak');
 
           if (data[i]) {
-            kotak.textContent = data[i].nama;
+            kotak.textContent = data[i].nama || "PO";
             if (data[i].jumlah >= 1000000) {
               kotak.classList.add('hijau');
+              totalMasuk += data[i].jumlah;
             } else if (data[i].jumlah >= 1000) {
               kotak.classList.add('biru');
+              totalMasuk += data[i].jumlah;
             } else {
               kotak.classList.add('kuning');
+              totalPO += 1000000; // asumsi PO target 1 juta
             }
           } else {
             kotak.textContent = "Kosong";
@@ -143,11 +150,18 @@
 
           container.appendChild(kotak);
         }
+
+        totalMasukEl.textContent = formatRupiah(totalMasuk);
+        totalPOEl.textContent = formatRupiah(totalPO);
       })
       .catch(error => {
         container.innerHTML = 'Gagal memuat data.';
         console.error('Fetch error:', error);
       });
+
+    function formatRupiah(angka) {
+      return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
   </script>
 </body>
 </html>
