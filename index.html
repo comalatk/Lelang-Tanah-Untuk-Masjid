@@ -136,7 +136,12 @@
     </div>
   </div>
 
-
+  <div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-button" onclick="closeModal()">×</span>
+    <p id="modal-text">Informasi akan ditampilkan di sini</p>
+  </div>
+</div>
 
   <script>
   const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
@@ -284,12 +289,7 @@ const penerima = 'Belum diketahui'; // fallback jika tidak ada kolom ke-3
     }
   </script>-->
 
-  <div id="modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close-button" onclick="closeModal()">×</span>
-    <p id="modal-text">Informasi akan ditampilkan di sini</p>
-  </div>
-</div>
+
 
   
 </body>
