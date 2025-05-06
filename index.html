@@ -142,6 +142,11 @@
   const kotakTotal = 45;
   const container = document.getElementById('grid-container');
 
+ const container = document.getElementById('grid-container');
+    const totalMasukEl = document.getElementById('total-masuk');
+    const totalPOEl = document.getElementById('total-po');
+    
+
   function openModal(message) {
     document.getElementById('modal-text').textContent = message;
     document.getElementById('modal').classList.remove('hidden');
@@ -151,6 +156,61 @@
     document.getElementById('modal').classList.add('hidden');
   }
 
+
+    fetch(sheetUrl)
+      .then(response => response.text())
+      .then(csvText => {
+        const rows = csvText.trim().split('\n').slice(1); // skip header
+        const data = rows.map(row => {
+          const [nama, nominal] = row.split(',');
+          return {
+            nama: nama.trim(),
+            jumlah: parseInt(nominal.replace(/\D/g, '')) || 0,
+          };
+        });
+
+        let totalMasuk = 0;
+        let totalPO = 0;
+
+        container.innerHTML = ''; // clear "memuat..."
+
+        for (let i = 0; i < kotakTotal; i++) {
+          const kotak = document.createElement('div');
+          kotak.classList.add('kotak');
+
+          if (data[i]) {
+            kotak.textContent = data[i].nama || "PO";
+            if (data[i].jumlah >= 1000000) {
+              kotak.classList.add('hijau');
+              totalMasuk += data[i].jumlah;
+            } else if (data[i].jumlah >= 1000) {
+              kotak.classList.add('biru');
+              totalMasuk += data[i].jumlah;
+            } else {
+              kotak.classList.add('kuning');
+              totalPO += 1000000; // asumsi PO target 1 juta
+            }
+          } else {
+            kotak.textContent = "Kosong";
+            kotak.classList.add('kosong');
+          }
+
+          container.appendChild(kotak);
+        }
+
+        totalMasukEl.textContent = formatRupiah(totalMasuk);
+        totalPOEl.textContent = formatRupiah(totalPO);
+      })
+      .catch(error => {
+        container.innerHTML = 'Gagal memuat data.';
+        console.error('Fetch error:', error);
+      });
+
+    function formatRupiah(angka) {
+      return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+    
+    
   fetch(sheetUrl)
     .then(response => response.text())
     .then(csvText => {
