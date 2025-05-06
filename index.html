@@ -81,41 +81,39 @@
     .lg-biru { background-color: #3498db; }
     .lg-kuning { background-color: #f1c40f; }
     .lg-abu { background-color: #bdc3c7; }
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
 
-.modal.hidden {
-  display: none;
-}
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
 
-    
-.modal-content {
-  background-color: #fff;
-  padding: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  max-width: 90%;
-  text-align: center;
-}
+    .modal.hidden {
+      display: none;
+    }
 
-.close-button {
-  float: right;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    .modal-content {
+      background-color: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      max-width: 90%;
+      text-align: center;
+    }
 
-    
+    .close-button {
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -124,7 +122,7 @@
 
     <div class="totals">
       <p><strong>Total Uang Masuk:</strong> <span id="total-masuk">Loading...</span></p>
-     <!--  <p><strong>Total PO:</strong> <span id="total-po">Loading...</span></p> -->
+      <p><strong>Total PO:</strong> <span id="total-po">Loading...</span></p>
     </div>
 
     <div id="grid-container">Memuat data...</div>
@@ -133,132 +131,64 @@
       <div class="legend-item"><div class="legend-color lg-hijau"></div> Lunas </div>
       <div class="legend-item"><div class="legend-color lg-biru"></div> Nyicil </div>
       <div class="legend-item"><div class="legend-color lg-kuning"></div> PO </div>
-      <div class="legend-item"><div class="legend-color lg-abu"></div> Kosong (Belum ada nama)</div>
+      <div class="legend-item"><div class="legend-color lg-abu"></div> Kosong </div>
     </div>
   </div>
 
+  <!-- Modal -->
   <div id="modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close-button" onclick="closeModal()">×</span>
-    <p id="modal-text">Informasi akan ditampilkan di sini</p>
+    <div class="modal-content">
+      <span class="close-button" onclick="closeModal()">×</span>
+      <p id="modal-text">Informasi penerima.</p>
+    </div>
   </div>
-</div>
 
   <script>
-  const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
-  const kotakTotal = 45;
-  const container = document.getElementById('grid-container');
-  const totalMasukEl = document.getElementById('total-masuk');
-  const totalPOEl = document.getElementById('total-po');
-
-  function openModal(message) {
-    document.getElementById('modal-text').textContent = message;
-    document.getElementById('modal').classList.remove('hidden');
-  }
-
-  function closeModal() {
-    document.getElementById('modal').classList.add('hidden');
-  }
-
-  function formatRupiah(angka) {
-    return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
-
-  fetch(sheetUrl)
-    .then(response => response.text())
-    .then(csvText => {
-      const rows = csvText.trim().split('\n').slice(1); // Skip header
-      const data = rows.map(row => {
-       
-const [nama, nominal] = row.split(',');
-const penerima = 'Belum diketahui'; // fallback jika tidak ada kolom ke-3
-
-        
-        return {
-          nama: (nama || '').trim(),
-          jumlah: parseInt(nominal.replace(/\D/g, '')) || 0,
-          penerima: (penerima || 'Belum diketahui').trim()
-        };
-      });
-
-      let totalMasuk = 0;
-      let totalPO = 0;
-
-      container.innerHTML = ''; // Bersihkan kotak sebelumnya
-
-      for (let i = 0; i < kotakTotal; i++) {
-        const kotak = document.createElement('div');
-        kotak.classList.add('kotak');
-
-        if (data[i]) {
-          kotak.textContent = data[i].nama || 'PO';
-
-          if (data[i].jumlah >= 1000000) {
-            kotak.classList.add('hijau');
-            totalMasuk += data[i].jumlah;
-          } else if (data[i].jumlah >= 1000) {
-            kotak.classList.add('biru');
-            totalMasuk += data[i].jumlah;
-          } else {
-            kotak.classList.add('kuning');
-            totalPO += 1000000; // Asumsi target PO
-          }
-
-          kotak.addEventListener('click', () => {
-            openModal(`Dana diterima oleh: ${data[i].penerima}`);
-          });
-
-        } else {
-          kotak.textContent = "Kosong";
-          kotak.classList.add('kosong');
-        }
-
-        container.appendChild(kotak);
-      }
-
-      totalMasukEl.textContent = formatRupiah(totalMasuk);
-      totalPOEl.textContent = formatRupiah(totalPO);
-    })
-    .catch(error => {
-      container.innerHTML = 'Gagal memuat data.';
-      console.error('Fetch error:', error);
-    });
-</script>
-
-
-  
-  
-<!--  <script>
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/19BGTnv4WoNttQiNNoBjVG-Rf1LW83WzQ26dg9egDRyg/gviz/tq?tqx=out:csv';
     const kotakTotal = 45;
 
     const container = document.getElementById('grid-container');
     const totalMasukEl = document.getElementById('total-masuk');
     const totalPOEl = document.getElementById('total-po');
 
+    function openModal(message) {
+      document.getElementById('modal-text').textContent = message;
+      document.getElementById('modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+
+    function formatRupiah(angka) {
+      return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
     fetch(sheetUrl)
       .then(response => response.text())
       .then(csvText => {
-        const rows = csvText.trim().split('\n').slice(1); // skip header
+        const rows = csvText.trim().split('\n').slice(1); // Skip header
         const data = rows.map(row => {
-          const [nama, nominal] = row.split(',');
+          const [nama, nominal, penerima] = row.split(',');
           return {
-            nama: nama.trim(),
+            nama: (nama || '').trim(),
             jumlah: parseInt(nominal.replace(/\D/g, '')) || 0,
+            penerima: (penerima || 'Belum diketahui').trim()
           };
         });
 
         let totalMasuk = 0;
         let totalPO = 0;
 
-        container.innerHTML = ''; // clear "memuat..."
+        container.innerHTML = '';
 
         for (let i = 0; i < kotakTotal; i++) {
           const kotak = document.createElement('div');
           kotak.classList.add('kotak');
 
           if (data[i]) {
-            kotak.textContent = data[i].nama || "PO";
+            kotak.textContent = data[i].nama || 'PO';
+
             if (data[i].jumlah >= 1000000) {
               kotak.classList.add('hijau');
               totalMasuk += data[i].jumlah;
@@ -267,8 +197,13 @@ const penerima = 'Belum diketahui'; // fallback jika tidak ada kolom ke-3
               totalMasuk += data[i].jumlah;
             } else {
               kotak.classList.add('kuning');
-              totalPO += 1000000; // asumsi PO target 1 juta
+              totalPO += 1000000;
             }
+
+            kotak.addEventListener('click', () => {
+              openModal(`Dana diterima oleh: ${data[i].penerima}`);
+            });
+
           } else {
             kotak.textContent = "Kosong";
             kotak.classList.add('kosong');
@@ -284,14 +219,6 @@ const penerima = 'Belum diketahui'; // fallback jika tidak ada kolom ke-3
         container.innerHTML = 'Gagal memuat data.';
         console.error('Fetch error:', error);
       });
-
-    function formatRupiah(angka) {
-      return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-  </script>-->
-
-
-
-  
+  </script>
 </body>
 </html>
