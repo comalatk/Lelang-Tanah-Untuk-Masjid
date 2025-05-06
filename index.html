@@ -122,7 +122,7 @@
 
     <div class="totals">
       <p><strong>Total Uang Masuk:</strong> <span id="total-masuk">Loading...</span></p>
-      <p><strong>Total PO:</strong> <span id="total-po">Loading...</span></p>
+<!-- <p><strong>Total PO:</strong> <span id="total-po">Loading...</span></p>-->
     </div>
 
     <div id="grid-container">Memuat data...</div>
@@ -149,7 +149,7 @@
 
     const container = document.getElementById('grid-container');
     const totalMasukEl = document.getElementById('total-masuk');
-    const totalPOEl = document.getElementById('total-po');
+   <!// const totalPOEl = document.getElementById('total-po');-->
 
     function openModal(message) {
       document.getElementById('modal-text').textContent = message;
@@ -178,7 +178,7 @@
         });
 
         let totalMasuk = 0;
-        let totalPO = 0;
+       <!-- let totalPO = 0;-->
 
         container.innerHTML = '';
 
