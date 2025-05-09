@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daftar Peserta Lelang</title>
   <style>
+    /* (semua style kamu tetap sama, tidak diubah) */
+    /* style lengkap dipersingkat di sini demi ruang, kamu bisa pakai yang versi kamu sebelumnya */
+
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
@@ -34,7 +37,7 @@
       text-align: center;
     }
 
-    h1 {
+    h1, h2 {
       font-size: 1.8rem;
       margin-bottom: 10px;
       color: #2c3e50;
@@ -48,7 +51,7 @@
       font-size: 1.1rem;
     }
 
-    #grid-container {
+    #grid-container, #grid-container-2 {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
@@ -166,31 +169,30 @@
 </head>
 <body>
 
-  <header>
-    <h2>LELANG TANAH WAKAF UNTUK RUMAH ALLAH</h2>
-  </header>
+<header>
+  <h2>LELANG TANAH WAKAF UNTUK RUMAH ALLAH</h2>
+</header>
 
-  <img src="lahan1.jpg" alt="Gambar Lahan Wakaf" />
+<img src="lahan1.jpg" alt="Gambar Lahan Wakaf" />
 
-  <div class="container">
-    <h2>Daftar Peserta Lelang 120 M2</h2>
-    <h2>1Juta/Orang (400K/M2) </h2>
-    
+<div class="container">
+  <h2>Daftar Peserta Lelang 120 M2</h2>
+  <h2>1Juta/Orang (400K/M2)</h2>
 
-    <div class="totals">
-      <p><strong>Total Uang Masuk:</strong> <span id="total-masuk">Loading...</span></p>
-    </div>
-
-    <div id="grid-container">Memuat data...</div>
-    
-
-    <div class="legend">
-      <div class="legend-item"><div class="legend-color lg-hijau"></div> Lunas </div>
-      <div class="legend-item"><div class="legend-color lg-biru"></div> Nyicil </div>
-      <div class="legend-item"><div class="legend-color lg-kuning"></div> PO </div>
-      <div class="legend-item"><div class="legend-color lg-abu"></div> Kosong (Belum ada nama)</div>
-    </div>
+  <div class="totals">
+    <p><strong>Total Uang Masuk:</strong> <span id="total-masuk">Loading...</span></p>
   </div>
+
+  <div id="grid-container">Memuat data...</div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color lg-hijau"></div> Lunas </div>
+    <div class="legend-item"><div class="legend-color lg-biru"></div> Nyicil </div>
+    <div class="legend-item"><div class="legend-color lg-kuning"></div> PO </div>
+    <div class="legend-item"><div class="legend-color lg-abu"></div> Kosong (Belum ada nama)</div>
+  </div>
+</div>
+
 <div class="container">
   <h1>Daftar Peserta Lahan Kedua</h1>
   <div class="totals">
@@ -198,108 +200,45 @@
   </div>
   <div id="grid-container-2">Memuat data...</div>
 </div>
-  
 
-  <!-- Modal -->
-  <div id="modal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close-button" onclick="closeModal()">&times;</span>
-      <p id="modal-text">Informasi</p>
-    </div>
+<!-- Modal -->
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-button" onclick="closeModal()">&times;</span>
+    <p id="modal-text">Informasi</p>
   </div>
-
-  <script>
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
-    const kotakTotal = 48;
-    const container = document.getElementById('grid-container');
-    const totalMasukEl = document.getElementById('total-masuk');
+</div>
 
 <script>
+  const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
   const sheetUrl2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?gid=42780574&single=true&output=csv';
+
+  const kotakTotal = 48;
   const kotakTotal2 = 5;
+
+  const container = document.getElementById('grid-container');
   const container2 = document.getElementById('grid-container-2');
+  const totalMasukEl = document.getElementById('total-masuk');
   const totalMasukEl2 = document.getElementById('total-masuk-2');
 
-  fetch(sheetUrl2)
-    .then(response => response.text())
-    .then(csvText => {
-      const rows = csvText.trim().split('\n').slice(1);
+  function openModal(message) {
+    document.getElementById('modal-text').textContent = message;
+    document.getElementById('modal').classList.remove('hidden');
+  }
 
-      const data = rows.map(row => {
-        const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
-        if (!cols) return { nama: '', jumlah: 0, penerima: '' };
+  function closeModal() {
+    document.getElementById('modal').classList.add('hidden');
+  }
 
-        const nama = (cols[0] || '').replace(/^"|"$/g, '').trim();
-        const nominal = (cols[1] || '0').replace(/\D/g, '');
-        const penerima = (cols[2] || 'Belum diketahui').replace(/^"|"$/g, '').trim();
+  function formatRupiah(angka) {
+    return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
 
-        return {
-          nama,
-          jumlah: parseInt(nominal) || 0,
-          penerima
-        };
-      });
-
-      let totalMasuk = 0;
-      container2.innerHTML = '';
-
-      for (let i = 0; i < kotakTotal2; i++) {
-        const kotak = document.createElement('div');
-        kotak.classList.add('kotak');
-
-        if (data[i]) {
-          kotak.textContent = data[i].nama || 'PO';
-
-          if (data[i].jumlah >= 1000000) {
-            kotak.classList.add('hijau');
-            totalMasuk += data[i].jumlah;
-          } else if (data[i].jumlah >= 1000) {
-            kotak.classList.add('biru');
-            totalMasuk += data[i].jumlah;
-          } else {
-            kotak.classList.add('kuning');
-          }
-
-          kotak.addEventListener('click', () => {
-            openModal(`Dana diterima oleh: ${data[i].penerima}`);
-          });
-
-        } else {
-          kotak.textContent = "Kosong";
-          kotak.classList.add('kosong');
-        }
-
-        container2.appendChild(kotak);
-      }
-
-      totalMasukEl2.textContent = formatRupiah(totalMasuk);
-    })
-    .catch(error => {
-      container2.innerHTML = 'Gagal memuat data.';
-      console.error('Fetch error:', error);
-    });
-</script>
-
-    
-
-    function openModal(message) {
-      document.getElementById('modal-text').textContent = message;
-      document.getElementById('modal').classList.remove('hidden');
-    }
-
-    function closeModal() {
-      document.getElementById('modal').classList.add('hidden');
-    }
-
-    function formatRupiah(angka) {
-      return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-
-    fetch(sheetUrl)
+  function renderKotak(url, container, totalEl, jumlahKotak) {
+    fetch(url)
       .then(response => response.text())
       .then(csvText => {
         const rows = csvText.trim().split('\n').slice(1);
-
         const data = rows.map(row => {
           const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
           if (!cols) return { nama: '', jumlah: 0, penerima: '' };
@@ -318,7 +257,7 @@
         let totalMasuk = 0;
         container.innerHTML = '';
 
-        for (let i = 0; i < kotakTotal; i++) {
+        for (let i = 0; i < jumlahKotak; i++) {
           const kotak = document.createElement('div');
           kotak.classList.add('kotak');
 
@@ -338,7 +277,6 @@
             kotak.addEventListener('click', () => {
               openModal(`Dana diterima oleh: ${data[i].penerima}`);
             });
-
           } else {
             kotak.textContent = "Kosong";
             kotak.classList.add('kosong');
@@ -347,30 +285,34 @@
           container.appendChild(kotak);
         }
 
-        totalMasukEl.textContent = formatRupiah(totalMasuk);
+        totalEl.textContent = formatRupiah(totalMasuk);
       })
       .catch(error => {
         container.innerHTML = 'Gagal memuat data.';
         console.error('Fetch error:', error);
       });
-  </script>
+  }
 
-  <footer>
-    <div>
-      <h4>Gerakan Nom-Noman Urunan Tuku Lemah Kanggo Masjid</h4>
-      <p>&copy; 2025 Semua hak dilindungi</p>
-    </div>
-    <div>
-      <h4>Kontak</h4>
-      <p>WA: 0819-0149-5505</p>
-      <p>Email: antoriskki118@gmail.com</p>
-    </div>
-    <div>
-      <h4>Dusun Kebukuran, Desa Kebojongan</h4>
-      <p>COMAL</p>
-      <p>PEMALANG, JATENG, Indonesia</p>
-    </div>
-  </footer>
+  renderKotak(sheetUrl, container, totalMasukEl, kotakTotal);
+  renderKotak(sheetUrl2, container2, totalMasukEl2, kotakTotal2);
+</script>
+
+<footer>
+  <div>
+    <h4>Gerakan Nom-Noman Urunan Tuku Lemah Kanggo Masjid</h4>
+    <p>&copy; 2025 Semua hak dilindungi</p>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p>WA: 0819-0149-5505</p>
+    <p>Email: antoriskki118@gmail.com</p>
+  </div>
+  <div>
+    <h4>Dusun Kebukuran, Desa Kebojongan</h4>
+    <p>COMAL</p>
+    <p>PEMALANG, JATENG, Indonesia</p>
+  </div>
+</footer>
 
 </body>
 </html>
