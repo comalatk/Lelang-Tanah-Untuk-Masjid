@@ -182,6 +182,7 @@
     </div>
 
     <div id="grid-container">Memuat data...</div>
+    
 
     <div class="legend">
       <div class="legend-item"><div class="legend-color lg-hijau"></div> Lunas </div>
@@ -190,6 +191,14 @@
       <div class="legend-item"><div class="legend-color lg-abu"></div> Kosong (Belum ada nama)</div>
     </div>
   </div>
+<div class="container">
+  <h1>Daftar Peserta Lahan Kedua</h1>
+  <div class="totals">
+    <p><strong>Total Uang Masuk:</strong> <span id="total-masuk-2">Loading...</span></p>
+  </div>
+  <div id="grid-container-2">Memuat data...</div>
+</div>
+  
 
   <!-- Modal -->
   <div id="modal" class="modal hidden">
@@ -204,6 +213,74 @@
     const kotakTotal = 48;
     const container = document.getElementById('grid-container');
     const totalMasukEl = document.getElementById('total-masuk');
+
+<script>
+  const sheetUrl2 = <iframe src=https:'//docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?gid=42780574&single=true&output=csv';
+  const kotakTotal2 = 5;
+  const container2 = document.getElementById('grid-container-2');
+  const totalMasukEl2 = document.getElementById('total-masuk-2');
+
+  fetch(sheetUrl2)
+    .then(response => response.text())
+    .then(csvText => {
+      const rows = csvText.trim().split('\n').slice(1);
+
+      const data = rows.map(row => {
+        const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+        if (!cols) return { nama: '', jumlah: 0, penerima: '' };
+
+        const nama = (cols[0] || '').replace(/^"|"$/g, '').trim();
+        const nominal = (cols[1] || '0').replace(/\D/g, '');
+        const penerima = (cols[2] || 'Belum diketahui').replace(/^"|"$/g, '').trim();
+
+        return {
+          nama,
+          jumlah: parseInt(nominal) || 0,
+          penerima
+        };
+      });
+
+      let totalMasuk = 0;
+      container2.innerHTML = '';
+
+      for (let i = 0; i < kotakTotal2; i++) {
+        const kotak = document.createElement('div');
+        kotak.classList.add('kotak');
+
+        if (data[i]) {
+          kotak.textContent = data[i].nama || 'PO';
+
+          if (data[i].jumlah >= 1000000) {
+            kotak.classList.add('hijau');
+            totalMasuk += data[i].jumlah;
+          } else if (data[i].jumlah >= 1000) {
+            kotak.classList.add('biru');
+            totalMasuk += data[i].jumlah;
+          } else {
+            kotak.classList.add('kuning');
+          }
+
+          kotak.addEventListener('click', () => {
+            openModal(`Dana diterima oleh: ${data[i].penerima}`);
+          });
+
+        } else {
+          kotak.textContent = "Kosong";
+          kotak.classList.add('kosong');
+        }
+
+        container2.appendChild(kotak);
+      }
+
+      totalMasukEl2.textContent = formatRupiah(totalMasuk);
+    })
+    .catch(error => {
+      container2.innerHTML = 'Gagal memuat data.';
+      console.error('Fetch error:', error);
+    });
+</script>
+
+    
 
     function openModal(message) {
       document.getElementById('modal-text').textContent = message;
