@@ -1,67 +1,155 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #f9f9f9;
+  color: #333;
+}
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
 
+img {
+  display: block;
+  margin: 20px auto;
+  object-fit: cover;
+  max-width: 80%;
+  border-radius: 10px;
+}
 
-<header class="sticky-header">
-<h2>LELANG TANAH WAKAF UNTUK RUMAH ALLAH</h2>
-  <title>Daftar Peserta Lelang</title>
-   <title>120M : 400K/M</title>
+.container {
+  max-width: 700px;
+  margin: auto;
+  text-align: center;
+}
 
-  <title>Daftar Peserta Lelang</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>Daftar Peserta Lelang</h1>
-<h2>1 Juta / Kapling</h2>
-<h3>Hijau = Lunas</h3>
-<h3>Biru = Nyicil</h3>
-<h3>Kuning = PO</h3>
-<h3>Abu = Kosong</h3>
-    <div id="grid-container"></div>
-  </div>
+h1, h2 {
+  color: #2c3e50;
+}
 
-  <script>
-    // Contoh data dummy sementara
-    const data = [
-      { nama: "Ahmad", jumlah: 1200000 },
-      { nama: "Budi", jumlah: 500000 },
-      { nama: "Chandra", jumlah: 10000 },
-      { nama: "Dina", jumlah: 0 },
-      { nama: "Eva", jumlah: 0 },
-      { nama: "Fikri", jumlah: 1500000 },
-      { nama: "Gina", jumlah: 1000 },
-      { nama: "Hasan", jumlah: 100000 },
-      { nama: "Ika", jumlah: 0 },
-    ];
+.totals {
+  background: #ecf0f1;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}
 
-    const kotakTotal = 45;
-    const container = document.getElementById("grid-container");
+#grid-container, #grid-container-2 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
 
-    for (let i = 0; i < kotakTotal; i++) {
-      const kotak = document.createElement("div");
-      kotak.classList.add("kotak");
+.kotak {
+  height: 60px;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  padding: 4px;
+  text-align: center;
+  word-break: break-word;
+  cursor: pointer;
+}
 
-      if (data[i]) {
-        kotak.textContent = data[i].nama;
-        if (data[i].jumlah >= 1000000) {
-          kotak.classList.add("hijau");
-        } else if (data[i].jumlah >= 1000) {
-          kotak.classList.add("biru");
-        } else {
-          kotak.classList.add("kuning");
-        }
-      } else {
-        kotak.textContent = "Kosong";
-        kotak.classList.add("kosong");
-      }
+.hijau { background-color: #2ecc71; }
+.biru { background-color: #3498db; }
+.kuning { background-color: #f1c40f; color: #000; }
+.kosong { background-color: #bdc3c7; }
 
-      container.appendChild(kotak);
-    }
-  </script>
-</body>
-</html>
+.legend {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  margin: 5px 10px;
+  font-size: 14px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  border-radius: 4px;
+}
+
+.lg-hijau { background-color: #2ecc71; }
+.lg-biru { background-color: #3498db; }
+.lg-kuning { background-color: #f1c40f; }
+.lg-abu { background-color: #bdc3c7; }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 25px 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease-in-out;
+  max-width: 90%;
+  width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 20px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: #e74c3c;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px;
+  background-color: #2c3e50;
+  color: white;
+  border-radius: 10px;
+  margin-top: 40px;
+}
+
+footer div {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px;
+}
