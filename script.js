@@ -3,7 +3,7 @@ const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9j
 const sheetUrl2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?gid=42780574&single=true&output=csv';
 
 const kotakTotal = 48;
-const kotakTotal2 = 100;
+const kotakTotal2 = 520;
 const container = document.getElementById('grid-container');
 const container2 = document.getElementById('grid-container-2');
 const totalMasukEl = document.getElementById('total-masuk');
