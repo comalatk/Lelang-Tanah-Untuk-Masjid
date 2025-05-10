@@ -39,12 +39,26 @@ header h1, header h2 {
   font-size: 1.1rem;
 }
 
-#grid-container, #grid-container-2 {
+#grid-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   margin-top: 20px;
 }
+
+#grid-container-2 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); /* ubah jadi 12 kolom */
+  gap: 6px;
+  margin-top: 20px;
+}
+
+#grid-container-2 .kotak {
+  height: 40px; /* lebih kecil */
+  font-size: 12px;
+  padding: 2px;
+}
+
 
 .kotak {
   height: 60px;
