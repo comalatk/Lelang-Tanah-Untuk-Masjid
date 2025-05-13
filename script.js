@@ -1,9 +1,8 @@
-
 const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
 const sheetUrl2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?gid=42780574&single=true&output=csv';
 
-const kotakTotal = 48;
-const kotakTotal2 = 520;
+const kotakTotal = 48;       // Untuk lelang pertama
+const kotakTotal2 = 520;     // Untuk lelang kedua
 const container = document.getElementById('grid-container');
 const container2 = document.getElementById('grid-container-2');
 const totalMasukEl = document.getElementById('total-masuk');
@@ -22,7 +21,7 @@ function closeModal() {
   document.getElementById('modal').classList.add('hidden');
 }
 
-function fetchData(sheetUrl, kotakTotal, container, totalEl) {
+function fetchData(sheetUrl, kotakTotal, container, totalEl, minimumValue) {
   fetch(sheetUrl)
     .then(response => response.text())
     .then(csvText => {
@@ -52,10 +51,10 @@ function fetchData(sheetUrl, kotakTotal, container, totalEl) {
         if (data[i]) {
           kotak.textContent = data[i].nama || 'PO';
 
-          if (data[i].jumlah >= 1000000) {
+          if (data[i].jumlah >= minimumValue) {
             kotak.classList.add('hijau');
             totalMasuk += data[i].jumlah;
-          } else if (data[i].jumlah >= 1000) {
+          } else if (data[i].jumlah > 0) {
             kotak.classList.add('biru');
             totalMasuk += data[i].jumlah;
           } else {
@@ -65,7 +64,6 @@ function fetchData(sheetUrl, kotakTotal, container, totalEl) {
           kotak.addEventListener('click', () => {
             openModal(`Dana diterima oleh: ${data[i].penerima}`);
           });
-
         } else {
           kotak.textContent = "Kosong";
           kotak.classList.add('kosong');
@@ -82,5 +80,8 @@ function fetchData(sheetUrl, kotakTotal, container, totalEl) {
     });
 }
 
-fetchData(sheetUrl, kotakTotal, container, totalMasukEl);
-fetchData(sheetUrl2, kotakTotal2, container2, totalMasukEl2);
+// Lelang 1: 1 juta/orang
+fetchData(sheetUrl, kotakTotal, container, totalMasukEl, 1000000);
+
+// Lelang 2: 720 ribu/orang
+fetchData(sheetUrl2, kotakTotal2, container2, totalMasukEl2, 720000);
