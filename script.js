@@ -1,7 +1,7 @@
 const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?output=csv';
 const sheetUrl2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR8FWUuq2J_p9jwVB43Pvy_jiuenlDV5htgsCcYaBKp6oF-io0n7UYKj4yUCRV92RUqMzY8KauEat-D/pub?gid=42780574&single=true&output=csv';
 
-const kotakTotal = 48;       // Untuk lelang pertama
+const kotakTotal = 52;       // Untuk lelang pertama
 const kotakTotal2 = 520;     // Untuk lelang kedua
 const container = document.getElementById('grid-container');
 const container2 = document.getElementById('grid-container-2');
