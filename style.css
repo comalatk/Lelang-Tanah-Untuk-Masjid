@@ -48,8 +48,8 @@ header h1, header h2 {
 
 #grid-container-2 {
   display: grid;
-  grid-template-columns: repeat(12, 1fr); /* ubah jadi 12 kolom */
-  gap: 6px;
+  grid-template-columns: repeat(2, 1fr); /* ubah jadi 12 kolom */
+  gap: 10px;
   margin-top: 20px;
 }
 
