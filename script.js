@@ -48,8 +48,10 @@ function fetchData(sheetUrl, kotakTotal, container, totalEl, minimumValue) {
         const kotak = document.createElement('div');
         kotak.classList.add('kotak');
 
+        const nomor = i + 1;
+
         if (data[i]) {
-          kotak.textContent = data[i].nama || 'PO';
+          kotak.textContent = `${nomor}. ${data[i].nama || 'PO'}`;
 
           if (data[i].jumlah >= minimumValue) {
             kotak.classList.add('hijau');
@@ -65,7 +67,7 @@ function fetchData(sheetUrl, kotakTotal, container, totalEl, minimumValue) {
             openModal(`Dana diterima oleh: ${data[i].penerima}`);
           });
         } else {
-          kotak.textContent = "Kosong";
+          kotak.textContent = `${nomor}. Kosong`;
           kotak.classList.add('kosong');
         }
 
